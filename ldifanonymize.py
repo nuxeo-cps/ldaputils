@@ -19,10 +19,34 @@
 
 # This program is an LDIF anonymizer
 
+import logging
+
 import sys
 
 import ldap
 from ldif import LDIFParser, LDIFWriter
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    filename='ldifanonymize.log',
+                    filemode='w')
+
+def error(message):
+    """Prints the message to stderr (and not stdout) and to the log
+    """
+    print >> sys.stderr, message
+    logging.error(message)
+
+def info(message):
+    """Prints the message to stderr (and not stdout) and to the log
+    """
+    print >> sys.stderr, message
+    logging.info(message)
+
+def debug(message):
+    """Prints the message only to the log
+    """
+    logging.debug(message)
 
 ATTRS_TO_ANONYMIZE = (
     'uid', 'userid',
@@ -68,7 +92,7 @@ class AnonymizingLdifParser(LDIFParser):
         # We have to make sure that attr_values is of the tuple type
         # because we want it to be hash-able.
         anonymization_map_key = (attr_name, tuple(attr_values))
-        print "anonymization_map_key: %s" % str(anonymization_map_key)
+        debug("anonymization_map_key: %s" % str(anonymization_map_key))
 
         if anonymization_map_key not in self.anonymization_map:
             anonymized_value = str(self.counter)
@@ -81,7 +105,7 @@ class AnonymizingLdifParser(LDIFParser):
         """
         dn_parts = ldap.dn.str2dn(dn)
         rdn = dn_parts[0]
-        print "rdn: %s" % rdn
+        debug("rdn: %s" % rdn)
 
         # A RDN can be multi-valued
         anon_rdn = []
@@ -98,7 +122,8 @@ class AnonymizingLdifParser(LDIFParser):
             anon_value = self.anonymize(attr_name, attr_values)
             if anon_value is not None:
                 entry[attr_name] = [anon_value]
-                print "modified entry: %s = %s" % (attr_name, str(entry[attr_name]))
+                debug("modified entry: %s = %s" %
+                      (attr_name, str(entry[attr_name])))
 
         self.writer.unparse(dn, entry)
 
@@ -121,4 +146,5 @@ if __name__ == '__main__':
     fin.close()
     fout.close()
     map_fout.close()
+    info("Anonymizing done")
 
