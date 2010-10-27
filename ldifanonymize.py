@@ -85,6 +85,8 @@ class AnonymizingLdifParser(LDIFParser):
 
     def anonymize(self, attr_name, attr_values):
         """Produces anonymized value and stores it in the anonymization_map.
+
+        Returns None if the attr is not be anonymized.
         """
         if attr_name.lower() not in self.target_attrs:
             return None
@@ -94,17 +96,21 @@ class AnonymizingLdifParser(LDIFParser):
         anonymization_map_key = (attr_name, tuple(attr_values))
         debug("anonymization_map_key: %s" % str(anonymization_map_key))
 
-        if anonymization_map_key not in self.anonymization_map:
+        anonymized_value = self.anonymization_map.get(anonymization_map_key)
+        if anonymized_value is None:
             anonymized_value = str(self.counter)
             if attr_name == 'mail':
                 anonymized_value = 'a%s@example.net' % anonymized_value
             self.counter += 1
             self.anonymization_map[anonymization_map_key] = anonymized_value
+
         return anonymized_value
 
     def handle(self, dn, entry):
         """Reads entries from input LDIF file and writes to output LDIF file.
         """
+        debug("processing: %s = %s" % (dn, entry))
+
         dn_parts = ldap.dn.str2dn(dn)
         rdn = dn_parts[0]
         debug("rdn: %s" % rdn)
@@ -113,7 +119,7 @@ class AnonymizingLdifParser(LDIFParser):
         anon_rdn = []
         for rdn_value in rdn:
             value = rdn_value[1]
-            anon_value = self.anonymize(rdn_value[0], value)
+            anon_value = self.anonymize(rdn_value[0], [value])
             if anon_value is not None:
                 value = anon_value
             anon_rdn.append((rdn_value[0], value, rdn_value[2]))
