@@ -111,6 +111,10 @@ class AnonymizingLdifParser(LDIFParser):
         """
         debug("processing: %s = %s" % (dn, entry))
 
+        # This happens if the LDIF is, for example, the result of a ldapsearch
+        if dn is None:
+            return
+
         dn_parts = ldap.dn.str2dn(dn)
         rdn = dn_parts[0]
         debug("rdn: %s" % rdn)
