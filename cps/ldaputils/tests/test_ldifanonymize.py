@@ -21,9 +21,11 @@ import unittest
 import os
 from filecmp import cmp
 
+TEST_DIR = os.path.split(__file__)[0]
+
 class TestCase(unittest.TestCase):
 
-    ldif_file_path = 'files/sample.ldif'
+    ldif_file_path = os.path.join(TEST_DIR, 'files/sample.ldif')
     ldif_anon_file_path = ldif_file_path + '.anonym'
     anon_map_file_path = ldif_file_path + '.anonym.map.py'
     expected_ldif_anon_file_path = ldif_anon_file_path + '.expected'
@@ -34,6 +36,9 @@ class TestCase(unittest.TestCase):
         os.system(self.command)
         self.assert_(cmp(self.ldif_anon_file_path,
                          self.expected_ldif_anon_file_path))
+
+def test_suite():
+    return unittest.makeSuite(TestCase)
 
 if __name__ == '__main__':
     unittest.main()
