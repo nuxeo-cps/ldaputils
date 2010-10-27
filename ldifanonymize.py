@@ -130,13 +130,12 @@ class AnonymizingLdifParser(LDIFParser):
         self.writer.unparse(dn, entry)
 
     def outputAnonymizationMap(self, output):
-        for k, v in self.anonymization_map.items():
-            output.write("%s -> %s\n" % (k, v))
+        output.write(repr(self.anonymization_map))
 
 if __name__ == '__main__':
     ldif_file_path = sys.argv[1]
     ldif_anonymized_file_path = ldif_file_path + '.anonym'
-    anonymization_map_file_path = ldif_file_path + '.anonym.map'
+    anonymization_map_file_path = ldif_file_path + '.anonym.map.py'
 
     fin = open(ldif_file_path, 'r')
     fout = open(ldif_anonymized_file_path, 'wb')

@@ -25,14 +25,15 @@ class TestCase(unittest.TestCase):
 
     ldif_file_path = 'files/sample.ldif'
     ldif_anon_file_path = ldif_file_path + '.anonym'
-    anon_map_file_path = ldif_file_path + '.anonym.map'
+    anon_map_file_path = ldif_file_path + '.anonym.map.py'
     expected_ldif_anon_file_path = ldif_anon_file_path + '.expected'
 
     command = '../ldifanonymize.py %s' % (ldif_file_path)
 
     def testAnonymize(self):
         os.system(self.command)
-        cmp(self.ldif_anon_file_path, self.expected_ldif_anon_file_path)
+        self.assert_(cmp(self.ldif_anon_file_path,
+                         self.expected_ldif_anon_file_path))
 
 if __name__ == '__main__':
     unittest.main()
