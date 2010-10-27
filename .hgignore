@@ -5,3 +5,7 @@ syntax:glob
 *.pyo
 *.orig
 *.pyc
+*.log
+*.egg-info
+dist
+eggs
