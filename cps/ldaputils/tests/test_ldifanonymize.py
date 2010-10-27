@@ -19,13 +19,17 @@
 
 import unittest
 import os
-from filecmp import cmp
+from StringIO import StringIO
+from cps.ldaputils.ldifanonymize import (
+    AnonymizingLdifParser,
+    ATTRS_TO_ANONYMIZE,
+)
 
 TEST_DIR = os.path.split(__file__)[0]
 
-class TestCase(unittest.TestCase):
+class LdifAnonTestCase(unittest.TestCase):
 
-    ldif_file_path = os.path.join(TEST_DIR, 'files/sample.ldif')
+    ldif_file_path = os.path.join(TEST_DIR, 'files', 'sample.ldif')
     ldif_anon_file_path = ldif_file_path + '.anonym'
     anon_map_file_path = ldif_file_path + '.anonym.map.py'
     expected_ldif_anon_file_path = ldif_anon_file_path + '.expected'
@@ -33,12 +37,19 @@ class TestCase(unittest.TestCase):
     command = '../ldifanonymize.py %s' % (ldif_file_path)
 
     def testAnonymize(self):
-        os.system(self.command)
-        self.assert_(cmp(self.ldif_anon_file_path,
-                         self.expected_ldif_anon_file_path))
+        fin = open(self.ldif_file_path)
+        fout = StringIO()
+        parser = AnonymizingLdifParser(fin, fout, ATTRS_TO_ANONYMIZE)
+        parser.parse()
+
+        # parser.outputAnonymizationMap(map_fout)
+        expected = open(self.expected_ldif_anon_file_path)
+        self.assertEquals(fout.getvalue(), expected.read())
+        expected.close()
+        fin.close()
 
 def test_suite():
-    return unittest.makeSuite(TestCase)
+    return unittest.makeSuite(LdifAnonTestCase)
 
 if __name__ == '__main__':
     unittest.main()
