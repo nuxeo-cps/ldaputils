@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # (C) Copyright 2010 JTEK <http://jtek.fr/>
 # Authors:
@@ -101,19 +101,19 @@ class AnonymizingLdifParser(LDIFParser):
         for k, v in self.anonymization_map.items():
             output.write("%s -> %s\n" % (k, v))
 
+if __name__ == '__main__':
+    ldif_file_path = sys.argv[1]
+    ldif_anonymized_file_path = ldif_file_path + '.anonym'
+    anonymization_map_file_path = ldif_file_path + '.anonym.map'
 
-ldif_file_path = sys.argv[1]
-ldif_anonymized_file_path = ldif_file_path + '.anonym'
-anonymization_map_file_path = ldif_file_path + '.anonym.map'
+    fin = open(ldif_file_path, 'r')
+    fout = open(ldif_anonymized_file_path, 'wb')
+    map_fout = open(anonymization_map_file_path, 'wb')
 
-fin = open(ldif_file_path, 'r')
-fout = open(ldif_anonymized_file_path, 'wb')
-map_fout = open(anonymization_map_file_path, 'wb')
-
-parser = AnonymizingLdifParser(fin, fout, ATTRS_TO_ANONYMIZE)
-parser.parse()
-parser.outputAnonymizationMap(map_fout)
-fin.close()
-fout.close()
-map_fout.close()
+    parser = AnonymizingLdifParser(fin, fout, ATTRS_TO_ANONYMIZE)
+    parser.parse()
+    parser.outputAnonymizationMap(map_fout)
+    fin.close()
+    fout.close()
+    map_fout.close()
 
