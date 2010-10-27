@@ -1,0 +1,33 @@
+dn: ou=JUSTICE,o=GOUV,c=FR
+objectClass: organizationalUnit
+ou: JUSTICE
+
+dn: uid=0,ou=JUSTICE,o=GOUV,c=FR
+cn: 1
+givenName: 4
+mail: 3
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+sn: 2
+uid: 5
+
+dn: uid=6,ou=JUSTICE,o=GOUV,c=FR
+businessCategory: 10
+cn: 9
+description: 13
+displayName: 8
+employeeNumber: 14
+givenName: 17
+mail: 16
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+ou: JUSTICE
+sn: 15
+telephoneNumber: 7
+title: 11
+uid: 18
+userPassword: 12
+
