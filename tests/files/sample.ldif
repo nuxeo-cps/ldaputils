@@ -20,7 +20,7 @@ uid: joeuser
 sn: Jack
 givenName: Jojo
 cn: FEAR
-mail: joeuser@example.net
+mail: joeuser@example.com
 
 # germaine.duchemin, MINISTERE, GOUV, FR
 dn: uid=germaine.duchemin,ou=MINISTERE,o=GOUV,c=FR

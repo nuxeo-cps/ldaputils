@@ -96,6 +96,8 @@ class AnonymizingLdifParser(LDIFParser):
 
         if anonymization_map_key not in self.anonymization_map:
             anonymized_value = str(self.counter)
+            if attr_name == 'mail':
+                anonymized_value = 'a%s@example.net' % anonymized_value
             self.counter += 1
             self.anonymization_map[anonymization_map_key] = anonymized_value
         return anonymized_value
