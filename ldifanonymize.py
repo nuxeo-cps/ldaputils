@@ -46,11 +46,12 @@ ATTRS_TO_ANONYMIZE = (
 
 class AnonymizingLdifParser(LDIFParser):
 
-    # This map has the following structure:
-    # key:   a dictionary of (LDIF attribute name, LDIF attribute value)
+    # This dictionary has the following structure:
+    # key:   a tuple of (LDIF attribute name, LDIF attribute value)
     # value: new anonymized value
     anonymization_map = dict()
 
+    # Variable used to create new anonymized values
     counter = 0
 
     def __init__(self, input, output, target_attrs):
@@ -59,6 +60,8 @@ class AnonymizingLdifParser(LDIFParser):
         self.target_attrs = target_attrs
 
     def anonymize(self, attr_name, attr_values):
+        """Produces anonymized value and stores it in the anonymization_map.
+        """
         if attr_name.lower() not in self.target_attrs:
             return None
 
@@ -74,6 +77,8 @@ class AnonymizingLdifParser(LDIFParser):
         return anonymized_value
 
     def handle(self, dn, entry):
+        """Reads entries from input LDIF file and writes to output LDIF file.
+        """
         dn_parts = ldap.dn.str2dn(dn)
         rdn = dn_parts[0]
         print "rdn: %s" % rdn

@@ -1,0 +1,44 @@
+# extended LDIF
+#
+# LDAPv3
+# base <ou=ministere,o=gouv,c=fr> with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+# MINISTERE, GOUV, FR
+dn: ou=MINISTERE,o=GOUV,c=FR
+objectClass: organizationalUnit
+ou: MINISTERE
+
+# joeuser, MINISTERE, GOUV, FR
+dn: uid=joeuser,ou=MINISTERE,o=GOUV,c=FR
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+uid: joeuser
+sn: Jack
+givenName: Jojo
+cn: FEAR
+mail: joeuser@example.net
+
+# germaine.duchemin, MINISTERE, GOUV, FR
+dn: uid=germaine.duchemin,ou=MINISTERE,o=GOUV,c=FR
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DUCHEMIN Germaine
+displayName: DUCHEMIN Germaine
+sn: DUCHEMIN
+mail: Germaine.Duchemin@ministere.fr
+businessCategory: Bureau
+ou: MINISTERE
+uid: germaine.duchemin
+userPassword:: Q0hBTkdFTUU=
+title: Madame
+employeeNumber: 1
+givenName: Germaine
+telephoneNumber: 01.53.94.88.20
+description: Affaires
+
